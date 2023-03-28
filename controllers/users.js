@@ -1,10 +1,11 @@
 const User = require("../models/user");
+const { badRequest, notFound, internalServerError } = require('../utils/constants')
 
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((users) => res.send({ data: users }))
     .catch(() => {
-      res.status(500).send({ message: "Ошибка по умолчанию." });
+      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
     });
 };
 
@@ -14,11 +15,11 @@ module.exports.getUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === "CastError") {
         res
-          .status(404)
+          .status(notFound)
           .send({ message: "Пользователь по указанному _id не найден." });
         return;
       }
-      res.status(500).send({ message: "Ошибка по умолчанию." });
+      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
     });
 };
 
@@ -29,12 +30,12 @@ module.exports.createUser = (req, res) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        res.status(400).send({
+        res.status(badRequest).send({
           message: "Переданы некорректные данные при создании пользователя.",
         });
         return;
       }
-      res.status(500).send({ message: "Ошибка по умолчанию." });
+      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
     });
 };
 
@@ -45,18 +46,18 @@ module.exports.updateProfileUser = (req, res) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        res.status(400).send({
+        res.status(badRequest).send({
           message: "Переданы некорректные данные при обновлении профиля.",
         });
         return;
       }
       if (err.name === "CastError") {
-        res.status(404).send({
+        res.status(notFound).send({
           message: "Пользователь с указанным _id не найден.",
         });
         return;
       }
-      res.status(500).send({ message: "Ошибка по умолчанию." });
+      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
     });
 };
 
@@ -67,17 +68,17 @@ module.exports.updateAvatarUser = (req, res, next) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        res.status(400).send({
+        res.status(badRequest).send({
           message: "Переданы некорректные данные при обновлении аватара.",
         });
         return;
       }
       if (err.name === "CastError") {
-        res.status(404).send({
+        res.status(notFound).send({
           message: "Пользователь с указанным _id не найден.",
         });
         return;
       }
-      res.status(500).send({ message: "Ошибка по умолчанию." });
+      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
     });
 };

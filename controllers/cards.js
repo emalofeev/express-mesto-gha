@@ -1,10 +1,11 @@
 const Card = require("../models/card");
+const { badRequest, notFound, internalServerError } = require('../utils/constants')
 
 module.exports.getCards = (req, res) => {
   Card.find({})
     .then((cards) => res.send({ data: cards }))
     .catch(() => {
-      res.status(500).send({ message: "Ошибка по умолчанию." });
+      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
     });
 };
 
@@ -16,12 +17,12 @@ module.exports.createCard = (req, res) => {
     .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        res.status(400).send({
+        res.status(badRequest).send({
           message: "Переданы некорректные данные при создании карточки.",
         });
         return;
       }
-      res.status(500).send({ message: "Ошибка по умолчанию." });
+      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
     });
 };
 
@@ -31,7 +32,7 @@ module.exports.deleteCard = (req, res) => {
     .catch((err) => {
       if (err.name === "CastError") {
         res
-          .status(404)
+          .status(notFound)
           .send({ message: " Карточка с указанным _id не найдена." });
         return;
       }
@@ -47,18 +48,18 @@ module.exports.likeCard = (req, res) => {
     .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        res.status(400).send({
+        res.status(badRequest).send({
           message: "Переданы некорректные данные для постановки лайка. ",
         });
         return;
       }
       if (err.name === "CastError") {
-        res.status(404).send({
+        res.status(notFound).send({
           message: "Передан несуществующий _id карточки.",
         });
         return;
       }
-      res.status(500).send({ message: "Ошибка по умолчанию." });
+      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
     });
 };
 
@@ -71,17 +72,17 @@ module.exports.dislikeCard = (req, res) => {
     .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        res.status(400).send({
+        res.status(badRequest).send({
           message: "Переданы некорректные данные для снятия лайка. ",
         });
         return;
       }
       if (err.name === "CastError") {
-        res.status(404).send({
+        res.status(notFound).send({
           message: "Передан несуществующий _id карточки.",
         });
         return;
       }
-      res.status(500).send({ message: "Ошибка по умолчанию." });
+      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
     });
 };
