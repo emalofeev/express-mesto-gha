@@ -7,6 +7,7 @@ const {
 
 module.exports.getCards = (req, res) => {
   Card.find({})
+    .populate(["owner", "likes"])
     .then((cards) => res.send({ data: cards }))
     .catch(() => {
       res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
@@ -18,6 +19,7 @@ module.exports.createCard = (req, res) => {
   const owner = req.user._id;
 
   Card.create({ name, link, owner })
+    .populate(["owner", "likes"])
     .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -48,6 +50,7 @@ module.exports.likeCard = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
+    .populate(["owner", "likes"])
     .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -72,6 +75,7 @@ module.exports.dislikeCard = (req, res) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
+    .populate(["owner", "likes"])
     .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === "ValidationError") {
