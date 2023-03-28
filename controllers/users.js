@@ -9,7 +9,7 @@ module.exports.getUsers = (req, res) => {
     });
 };
 
-module.exports.getUser = (req, res, next) => {
+module.exports.getUser = (req, res) => {
   User.findById(req.params.userId)
     .then((user) => res.send({ data: user }))
     .catch((err) => {
@@ -61,7 +61,7 @@ module.exports.updateProfileUser = (req, res) => {
     });
 };
 
-module.exports.updateAvatarUser = (req, res, next) => {
+module.exports.updateAvatarUser = (req, res) => {
   const { avatar } = req.body;
 
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
