@@ -9,7 +9,9 @@ module.exports.getUsers = (req, res) => {
   User.find({})
     .then((users) => res.send({ data: users }))
     .catch(() => {
-      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
+      res
+        .status(internalServerError)
+        .send({ message: "На сервере произошла ошибка" });
     });
 };
 
@@ -20,10 +22,12 @@ module.exports.getUser = (req, res) => {
       if (err.name === "CastError") {
         res
           .status(notFound)
-          .send({ message: "Пользователь по указанному _id не найден." });
+          .send({ message: "Пользователь по указанному _id не найден" });
         return;
       }
-      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
+      res
+        .status(internalServerError)
+        .send({ message: "На сервере произошла ошибка" });
     });
 };
 
@@ -35,11 +39,13 @@ module.exports.createUser = (req, res) => {
     .catch((err) => {
       if (err.name === "ValidationError") {
         res.status(badRequest).send({
-          message: "Переданы некорректные данные при создании пользователя.",
+          message: "Переданы некорректные данные при создании пользователя",
         });
         return;
       }
-      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
+      res
+        .status(internalServerError)
+        .send({ message: "На сервере произошла ошибка" });
     });
 };
 
@@ -51,17 +57,19 @@ module.exports.updateProfileUser = (req, res) => {
     .catch((err) => {
       if (err.name === "ValidationError") {
         res.status(badRequest).send({
-          message: "Переданы некорректные данные при обновлении профиля.",
+          message: "Переданы некорректные данные при обновлении профиля",
         });
         return;
       }
       if (err.name === "CastError") {
         res.status(notFound).send({
-          message: "Пользователь с указанным _id не найден.",
+          message: "Пользователь с указанным _id не найден",
         });
         return;
       }
-      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
+      res
+        .status(internalServerError)
+        .send({ message: "На сервере произошла ошибка" });
     });
 };
 
@@ -73,16 +81,18 @@ module.exports.updateAvatarUser = (req, res) => {
     .catch((err) => {
       if (err.name === "ValidationError") {
         res.status(badRequest).send({
-          message: "Переданы некорректные данные при обновлении аватара.",
+          message: "Переданы некорректные данные при обновлении аватара",
         });
         return;
       }
       if (err.name === "CastError") {
         res.status(notFound).send({
-          message: "Пользователь с указанным _id не найден.",
+          message: "Пользователь с указанным _id не найден",
         });
         return;
       }
-      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
+      res
+        .status(internalServerError)
+        .send({ message: "На сервере произошла ошибка" });
     });
 };

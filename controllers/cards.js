@@ -10,7 +10,9 @@ module.exports.getCards = (req, res) => {
     .populate(["owner", "likes"])
     .then((cards) => res.send({ data: cards }))
     .catch(() => {
-      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
+      res
+        .status(internalServerError)
+        .send({ message: "На сервере произошла ошибка" });
     });
 };
 
@@ -19,16 +21,17 @@ module.exports.createCard = (req, res) => {
   const owner = req.user._id;
 
   Card.create({ name, link, owner })
-    .populate(["owner", "likes"])
     .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === "ValidationError") {
         res.status(badRequest).send({
-          message: "Переданы некорректные данные при создании карточки.",
+          message: "Переданы некорректные данные при создании карточки",
         });
         return;
       }
-      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
+      res
+        .status(internalServerError)
+        .send({ message: "На сервере произошла ошибка" });
     });
 };
 
@@ -39,7 +42,7 @@ module.exports.deleteCard = (req, res) => {
       if (err.name === "CastError") {
         res
           .status(notFound)
-          .send({ message: " Карточка с указанным _id не найдена." });
+          .send({ message: " Карточка с указанным _id не найдена" });
       }
     });
 };
@@ -50,22 +53,23 @@ module.exports.likeCard = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .populate(["owner", "likes"])
     .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === "ValidationError") {
         res.status(badRequest).send({
-          message: "Переданы некорректные данные для постановки лайка. ",
+          message: "Переданы некорректные данные для постановки лайка",
         });
         return;
       }
       if (err.name === "CastError") {
         res.status(notFound).send({
-          message: "Передан несуществующий _id карточки.",
+          message: "Передан несуществующий _id карточки",
         });
         return;
       }
-      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
+      res
+        .status(internalServerError)
+        .send({ message: "На сервере произошла ошибка" });
     });
 };
 
@@ -75,21 +79,22 @@ module.exports.dislikeCard = (req, res) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .populate(["owner", "likes"])
     .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === "ValidationError") {
         res.status(badRequest).send({
-          message: "Переданы некорректные данные для снятия лайка. ",
+          message: "Переданы некорректные данные для снятия лайка",
         });
         return;
       }
       if (err.name === "CastError") {
         res.status(notFound).send({
-          message: "Передан несуществующий _id карточки.",
+          message: "Передан несуществующий _id карточки",
         });
         return;
       }
-      res.status(internalServerError).send({ message: "Ошибка по умолчанию." });
+      res
+        .status(internalServerError)
+        .send({ message: "На сервере произошла ошибка" });
     });
 };

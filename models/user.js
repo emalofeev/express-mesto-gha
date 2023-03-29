@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 const userSchema = new mongoose.Schema(
   {
@@ -17,6 +18,11 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String,
       required: true,
+      validate: {
+        validator: (url) => validator.isURL(url),
+        message:
+          "URL указан в неверном формате или содержит недопустимые символы",
+      },
     },
   },
   { versionKey: false },
