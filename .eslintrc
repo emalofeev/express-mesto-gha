@@ -6,6 +6,7 @@
     "object-curly-newline": "off",
     "arrow-body-style": "off",
     "consistent-return": "off",
-    "implicit-arrow-linebreak": "off"
+    "implicit-arrow-linebreak": "off",
+    "func-names": "off"
   }
 }
