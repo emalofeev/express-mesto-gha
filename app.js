@@ -22,7 +22,7 @@ app.post(
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
       avatar: Joi.string().pattern(
-        /(https?:\/\/)(w{3}\.)([-._~:/?#][@!$&'()*+,;=])/
+        /(https?:\/\/)?(((\d{1,3}\.){3}\d{1,3})|((\w-?)+\.(ru|com)))(:\d{2,5})?((\/.+)+)?\/?#?/
       ),
       email: Joi.string().required().email(),
       password: Joi.string().required(),
