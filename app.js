@@ -16,16 +16,6 @@ mongoose.connect(DB_ADDRESS);
 app.use(bodyParser.json());
 
 app.post(
-  "/signin",
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required().email(),
-      password: Joi.string().required(),
-    }),
-  }),
-  login
-);
-app.post(
   "/signup",
   celebrate({
     body: Joi.object().keys({
@@ -39,6 +29,17 @@ app.post(
     }),
   }),
   createUser
+);
+
+app.post(
+  "/signin",
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+    }),
+  }),
+  login
 );
 
 app.use(auth);
