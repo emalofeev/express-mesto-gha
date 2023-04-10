@@ -1,10 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const { celebrate, Joi } = require("celebrate");
+const { celebrate, Joi, errors } = require("celebrate");
 const bodyParser = require("body-parser");
 const usersRouter = require("./routes/users");
 const cardsRouter = require("./routes/cards");
 const auth = require("./middlewares/auth");
+const errorsMiddlewares = require("./middlewares/errorsMiddlewares");
 const { PORT, DB_ADDRESS } = require("./config");
 const { login, createUser } = require("./controllers/users");
 
@@ -22,7 +23,7 @@ app.post(
       password: Joi.string().required(),
     }),
   }),
-  login,
+  login
 );
 app.post(
   "/signup",
@@ -30,16 +31,20 @@ app.post(
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
-      avatar: Joi.string().required().pattern(/(https?:\/\/)(w{3}\.)([-._~:/?#][@!$&'()*+,;=])/),
+      avatar: Joi.string().pattern(
+        /(https?:\/\/)(w{3}\.)([-._~:/?#][@!$&'()*+,;=])/
+      ),
       email: Joi.string().required().email(),
       password: Joi.string().required(),
     }),
   }),
-  createUser,
+  createUser
 );
 
 app.use(auth);
 app.use(usersRouter);
 app.use(cardsRouter);
+app.use(errors());
+app.use(errorsMiddlewares);
 
 app.listen(PORT, () => {});
