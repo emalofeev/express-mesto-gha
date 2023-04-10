@@ -17,10 +17,15 @@ module.exports.getUsers = (req, res, next) => {
 
 module.exports.getUser = (req, res, next) => {
   User.findById(req.params.userId)
-    .then((user) => res.send({ data: user }))
+    .then((user) => {
+      if (!user) {
+        next(new NotFound("Пользователь по указанному _id не найден"));
+      }
+      return res.send({ data: user });
+    })
     .catch((err) => {
       if (err.name === "CastError") {
-        next(new NotFound("Пользователь по указанному _id не найден"));
+        next(new BadRequest("Переданы некорректные данные пользователя"));
         return;
       }
       next(new InternalServerError("На сервере произошла ошибка"));
