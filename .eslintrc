@@ -8,6 +8,7 @@
     "consistent-return": "off",
     "implicit-arrow-linebreak": "off",
     "func-names": "off",
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "function-paren-newline": "off"
   }
 }
