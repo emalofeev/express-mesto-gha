@@ -20,7 +20,7 @@ usersRouter.patch(
       about: Joi.string().required().min(2).max(30),
     }),
   }),
-  updateProfileUser,
+  updateProfileUser
 );
 usersRouter.patch(
   "/users/me/avatar",
@@ -28,10 +28,12 @@ usersRouter.patch(
     body: Joi.object().keys({
       avatar: Joi.string()
         .required()
-        .pattern(/(https?:\/\/)(w{3}\.)([-._~:/?#][@!$&'()*+,;=])/),
+        .pattern(
+          /(https?:\/\/)?(((\d{1,3}\.){3}\d{1,3})|((\w-?)+\.(ru|com)))(:\d{2,5})?((\/.+)+)?\/?#?/
+        ),
     }),
   }),
-  updateAvatarUser,
+  updateAvatarUser
 );
 
 module.exports = usersRouter;
