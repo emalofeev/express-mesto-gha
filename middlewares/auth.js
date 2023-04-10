@@ -1,10 +1,8 @@
 const jwt = require("jsonwebtoken");
-const { unauthorized } = require("../utils/constants");
+const Unauthorized = require("../errors/Unauthorized");
 
-const handleAuthError = (res) => {
-  res
-    .status(unauthorized)
-    .send({ message: "Передан неверный логин или пароль" });
+const handleAuthError = () => {
+  throw new Unauthorized("Передан неверный логин или пароль");
 };
 
 const extractBearerToken = (header) => {

@@ -8,6 +8,7 @@ const auth = require("./middlewares/auth");
 const errorsMiddlewares = require("./middlewares/errorsMiddlewares");
 const { PORT, DB_ADDRESS } = require("./config");
 const { login, createUser } = require("./controllers/users");
+const NotFound = require("./errors/NotFound");
 
 const app = express();
 
@@ -30,7 +31,6 @@ app.post(
   }),
   createUser
 );
-
 app.post(
   "/signin",
   celebrate({
@@ -41,6 +41,9 @@ app.post(
   }),
   login
 );
+app.use(() => {
+  throw new NotFound('Страница не найдена');
+});
 
 app.use(auth);
 app.use(usersRouter);
