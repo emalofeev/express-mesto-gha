@@ -41,14 +41,15 @@ app.post(
   }),
   login
 );
-app.use(() => {
-  throw new NotFound('Страница не найдена');
-});
 
 app.use(auth);
 app.use(usersRouter);
 app.use(cardsRouter);
 app.use(errors());
 app.use(errorsMiddlewares);
+
+app.use(() => {
+  throw new NotFound("Страница не найдена");
+});
 
 app.listen(PORT, () => {});
