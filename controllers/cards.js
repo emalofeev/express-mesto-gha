@@ -40,10 +40,11 @@ module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {
       if (card.owner._id.toString() === req.user._id) {
-        Card.findByIdAndRemove(req.params.cardId).then(
-          res.send({ data: card })
-        );
-      } else next(new Forbidden("Попытка удалить чужую карточку"));
+        Card.findByIdAndRemove(req.params.cardId).then(res.status(200));
+      } else {
+        next(new Forbidden("Попытка удалить чужую карточку"));
+        return;
+      }
       if (!card) {
         next(new NotFound("Карточка по указанному _id не найдена"));
       }
@@ -65,7 +66,7 @@ module.exports.likeCard = (req, res, next) => {
       if (!card) {
         next(new NotFound("Карточка по указанному _id не найдена"));
       }
-      return res.send({ data: card });
+      res.status(200).send({ data: card });
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -92,7 +93,7 @@ module.exports.dislikeCard = (req, res, next) => {
       if (!card) {
         next(new NotFound("Карточка по указанному _id не найдена"));
       }
-      return res.send({ data: card });
+      res.status(200).send({ data: card });
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
