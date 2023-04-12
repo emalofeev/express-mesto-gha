@@ -2,7 +2,7 @@ const Card = require("../models/card");
 const BadRequest = require("../errors/BadRequest");
 const NotFound = require("../errors/NotFound");
 const InternalServerError = require("../errors/InternalServerError");
-const Forbidden = require("../errors/InternalServerError");
+const Forbidden = require("../errors/Forbidden");
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
@@ -39,6 +39,9 @@ module.exports.createCard = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {
+      if (!card) {
+        return next(new NotFound("Карточка по указанному _id не найдена"));
+      }
       if (card.owner._id.toString() === req.user._id) {
         Card.findByIdAndRemove(req.params.cardId).then(
           res.send({ data: card })
@@ -46,6 +49,7 @@ module.exports.deleteCard = (req, res, next) => {
       } else {
         next(new Forbidden("Попытка удалить чужую карточку"));
       }
+      res.send({ data: card });
     })
     .catch((err) => {
       if (err.name === "CastError") {
