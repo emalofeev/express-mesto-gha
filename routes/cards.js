@@ -1,4 +1,5 @@
 const cardsRouter = require("express").Router();
+const regex = require("../utils/constans");
 const { celebrate, Joi } = require("celebrate");
 const {
   getCards,
@@ -14,11 +15,7 @@ cardsRouter.post(
   celebrate({
     body: Joi.object().keys({
       name: Joi.string().required().min(2).max(30),
-      link: Joi.string()
-        .required()
-        .pattern(
-          /(https?:\/\/)?(((\d{1,3}\.){3}\d{1,3})|((\w-?)+\.(ru|com)))(:\d{2,5})?((\/.+)+)?\/?#?/
-        ),
+      link: Joi.string().required().pattern(regex),
     }),
   }),
   createCard

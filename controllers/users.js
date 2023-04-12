@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const BadRequest = require("../errors/BadRequest");
-const Unauthorized = require("../errors/Unauthorized");
 const NotFound = require("../errors/NotFound");
 const ConflictingRequest = require("../errors/ConflictingRequest");
 const InternalServerError = require("../errors/InternalServerError");
@@ -19,7 +18,7 @@ module.exports.getUser = (req, res, next) => {
   User.findById(req.params.userId)
     .then((user) => {
       if (!user) {
-        next(new NotFound("Пользователь по указанному _id не найден"));
+        return next(new NotFound("Пользователь по указанному _id не найден"));
       }
       return res.send({ data: user });
     })
@@ -37,7 +36,7 @@ module.exports.getCurrentUser = (req, res, next) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === "CastError") {
-        next(new NotFound("Пользователь по указанному _id не найден"));
+        next(new BadRequest("Пользователь по указанному _id не найден"));
         return;
       }
       next(new InternalServerError("На сервере произошла ошибка"));
@@ -89,7 +88,11 @@ module.exports.createUser = (req, res, next) => {
 module.exports.updateProfileUser = (req, res, next) => {
   const { name, about } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
+  User.findByIdAndUpdate(
+    req.user._id,
+    { name, about },
+    { new: true, runValidators: true }
+  )
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -99,7 +102,7 @@ module.exports.updateProfileUser = (req, res, next) => {
         return;
       }
       if (err.name === "CastError") {
-        next(new NotFound("Пользователь по указанному _id не найден"));
+        next(new BadRequest("Пользователь по указанному _id не найден"));
         return;
       }
       next(new InternalServerError("На сервере произошла ошибка"));
@@ -109,7 +112,11 @@ module.exports.updateProfileUser = (req, res, next) => {
 module.exports.updateAvatarUser = (req, res, next) => {
   const { avatar } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
+  User.findByIdAndUpdate(
+    req.user._id,
+    { avatar },
+    { new: true, runValidators: true }
+  )
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -119,7 +126,7 @@ module.exports.updateAvatarUser = (req, res, next) => {
         return;
       }
       if (err.name === "CastError") {
-        next(new NotFound("Пользователь по указанному _id не найден"));
+        next(new BadRequest("Пользователь по указанному _id не найден"));
         return;
       }
       next(new InternalServerError("На сервере произошла ошибка"));
@@ -137,7 +144,5 @@ module.exports.login = (req, res, next) => {
         }),
       });
     })
-    .catch(() => {
-      next(new Unauthorized("Передан неверный логин или пароль"));
-    });
+    .catch(next);
 };

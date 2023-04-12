@@ -1,4 +1,5 @@
 const usersRouter = require("express").Router();
+const regex = require("../utils/constans");
 const { celebrate, Joi } = require("celebrate");
 const {
   getUsers,
@@ -33,11 +34,7 @@ usersRouter.patch(
   "/users/me/avatar",
   celebrate({
     body: Joi.object().keys({
-      avatar: Joi.string()
-        .required()
-        .pattern(
-          /(https?:\/\/)?(((\d{1,3}\.){3}\d{1,3})|((\w-?)+\.(ru|com)))(:\d{2,5})?((\/.+)+)?\/?#?/
-        ),
+      avatar: Joi.string().required().pattern(regex),
     }),
   }),
   updateAvatarUser
