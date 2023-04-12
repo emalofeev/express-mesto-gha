@@ -54,9 +54,9 @@ module.exports.likeCard = (req, res, next) => {
   )
     .then((card) => {
       if (!card) {
-        next(new NotFound('Карточка по указанному _id не найдена'));
+        return next(new NotFound('Карточка по указанному _id не найдена'));
       }
-      res.send({ data: card });
+      return res.send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -81,9 +81,9 @@ module.exports.dislikeCard = (req, res, next) => {
   )
     .then((card) => {
       if (!card) {
-        next(new NotFound('Карточка по указанному _id не найдена'));
+        return next(new NotFound('Карточка по указанному _id не найдена'));
       }
-      res.send({ data: card });
+      return res.send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
