@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
+const mongoose = require('mongoose');
+const validator = require('validator');
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -14,7 +14,7 @@ const cardSchema = new mongoose.Schema({
     validate: {
       validator: (url) => validator.isURL(url),
       message:
-        "URL указан в неверном формате или содержит недопустимые символы",
+        'URL указан в неверном формате или содержит недопустимые символы',
     },
   },
   owner: {
@@ -34,4 +34,4 @@ const cardSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("card", cardSchema);
+module.exports = mongoose.model('card', cardSchema);
