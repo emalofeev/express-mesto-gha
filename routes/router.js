@@ -1,9 +1,9 @@
 const router = require("express").Router();
+const { celebrate, Joi } = require("celebrate");
 const usersRouter = require("./users");
 const cardsRouter = require("./cards");
 const auth = require("../middlewares/auth");
 const regex = require("../utils/constans");
-const { celebrate, Joi } = require("celebrate");
 const { login, createUser } = require("../controllers/users");
 const NotFound = require("../errors/NotFound");
 

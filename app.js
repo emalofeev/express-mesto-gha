@@ -1,9 +1,9 @@
 const express = require("express");
+const { errors } = require("celebrate");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const routes = require("./routes/router");
 const errorsMiddlewares = require("./middlewares/errorsMiddlewares");
-const { errors } = require("celebrate");
 const { PORT, DB_ADDRESS } = require("./config");
 
 const app = express();

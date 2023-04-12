@@ -1,6 +1,6 @@
 const cardsRouter = require("express").Router();
-const regex = require("../utils/constans");
 const { celebrate, Joi } = require("celebrate");
+const regex = require("../utils/constans");
 const {
   getCards,
   createCard,
