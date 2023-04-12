@@ -43,20 +43,13 @@ module.exports.deleteCard = (req, res, next) => {
       }
       if (card.owner._id.toString() === req.user._id) {
         Card.findByIdAndRemove(req.params.cardId).then(
-          res.send({ data: card }).catch(next)
+          res.send({ data: card })
         );
       } else {
         next(new Forbidden("Попытка удалить чужую карточку"));
       }
-      res.send({ data: card });
     })
-    .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequest("Карточка с указанным _id не найдена"));
-      } else {
-        next(err);
-      }
-    });
+    .catch(next);
 };
 
 module.exports.likeCard = (req, res, next) => {
